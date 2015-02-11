@@ -9,6 +9,10 @@
 /// Category
 #import "NSDate+NCLibrary.h"
 #import "UIImage+NCLibrary.h"
+#import "NSArray+NCLibrary.h"
+#import "NSDictionary+NCLibrary.h"
 
 /// Macro
 #import "Logging+NCLibrary.h"
+#import "Version+NCLibrary.h"
+#import "Screen+NCLibrary.h"

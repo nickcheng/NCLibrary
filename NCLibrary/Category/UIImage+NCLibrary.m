@@ -7,7 +7,7 @@
 //
 
 #import "UIImage+NCLibrary.h"
-#import "NCDependency.h"
+#import "Screen+NCLibrary.h"
 
 @implementation UIImage (NCLibrary)
 
@@ -15,7 +15,7 @@
   
   NSString *name = imageName;
   
-  if (IS_SERIES_5) {
+  if (IS_SCREEN_HEIGHT_EQUAL(568)) {
     name = [NSString stringWithFormat:@"%@-568h.png", name];
   }
   
@@ -42,9 +42,9 @@
   }
     
   //
-  if (IS_SERIES_5) {
+  if (IS_SCREEN_HEIGHT_EQUAL(568)) {
       [result appendString:@"-568h@2x"];
-  } else if (DEVICE_HAS_RETINA_DISPLAY) {
+  } else if (IS_SCREEN_RETINA_DISPLAY) {
     [result appendString:@"@2x"];
   }
   

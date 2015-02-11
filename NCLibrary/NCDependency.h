@@ -6,4 +6,3 @@
 //  Copyright (c) 2015年 nxmix.com. All rights reserved.
 //
 
-#import <UIDeviceUtil/UIDeviceUtil.h>
