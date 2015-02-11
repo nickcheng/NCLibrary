@@ -15,7 +15,7 @@
   NSError *error = nil;
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
   if (error != nil) {
-    DDLogError(@"Convert dictionary to JSONString failed! Array:%@ Error:%@", self, error);
+    NCLogError(@"Convert dictionary to JSONString failed! Array:%@ Error:%@", self, error);
     return nil;
   }
   
