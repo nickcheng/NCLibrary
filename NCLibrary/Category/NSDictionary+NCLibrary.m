@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+NCLibrary.h"
+#import "Logging+NCLibrary.h"
 
 @implementation NSDictionary (NCLibrary)
 

@@ -7,6 +7,7 @@
 //
 
 #import "NSArray+NCLibrary.h"
+#import "Logging+NCLibrary.h"
 
 @implementation NSArray (NCLibrary)
 
