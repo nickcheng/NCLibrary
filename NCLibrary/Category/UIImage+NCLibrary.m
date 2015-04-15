@@ -3,7 +3,7 @@
 //  NCLibrary
 //
 //  Created by nickcheng on 12-11-15.
-//  Copyright (c) 2012年 nx. All rights reserved.
+//  Copyright (c) 2012年 nickcheng.com. All rights reserved.
 //
 
 #import "UIImage+NCLibrary.h"
@@ -277,6 +277,53 @@
 
 - (NSString *)base64String {
   return [UIImagePNGRepresentation(self) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+}
+
+- (instancetype)darken:(CGFloat)alpha andBlurRadius:(CGFloat)radius withBlendModeFilterName:(NSString *)blendModeFilterName {
+  //
+  CIImage *inputImage = [[CIImage alloc] initWithImage:self];
+  CIContext *context = [CIContext contextWithOptions:nil];
+  
+  // Firstly, we'll use CIAffineClamp to prevent black edges on our blurred image
+  // CIAffineClamp extends the edges off to infinity (check the docs, yo)
+  CGAffineTransform transform = CGAffineTransformIdentity;
+  CIFilter *clampFilter = [CIFilter filterWithName:@"CIAffineClamp"];
+  [clampFilter setValue:inputImage forKeyPath:kCIInputImageKey];
+  [clampFilter setValue:[NSValue valueWithBytes:&transform objCType:@encode(CGAffineTransform)] forKeyPath:@"inputTransform"];
+  CIImage *clampedImage = [clampFilter outputImage];
+  
+  // Next, create some darkness
+  CIFilter* blackGenerator = [CIFilter filterWithName:@"CIConstantColorGenerator"];
+  CIColor* black = [CIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:alpha];
+  [blackGenerator setValue:black forKey:@"inputColor"];
+  CIImage* blackImage = [blackGenerator valueForKey:@"outputImage"];
+  
+  // Apply that black
+  CIFilter *compositeFilter = [CIFilter filterWithName:blendModeFilterName];
+  [compositeFilter setValue:blackImage forKey:@"inputImage"];
+  [compositeFilter setValue:clampedImage forKey:@"inputBackgroundImage"];
+  CIImage *darkenedImage = [compositeFilter outputImage];
+  
+  // Blur the image
+  CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
+  [blurFilter setDefaults];
+  [blurFilter setValue:@(radius) forKey:@"inputRadius"];
+  [blurFilter setValue:darkenedImage forKey:kCIInputImageKey];
+  CIImage *blurredImage = [blurFilter outputImage];
+  
+  CGImageRef cgimg = [context createCGImage:blurredImage fromRect:inputImage.extent];
+  UIImage *blurredAndDarkenedImage = [UIImage imageWithCGImage:cgimg];
+  CGImageRelease(cgimg);
+  
+  return blurredAndDarkenedImage;
+}
+
+- (instancetype)darken:(CGFloat)alpha andBlurRadius:(CGFloat)radius {
+  return [self darken:alpha andBlurRadius:radius withBlendModeFilterName:@"CIMultiplyBlendMode"];
+}
+
+- (instancetype)darkenedAndBlurredImage {
+  return [self darken:0.5f andBlurRadius:12.0f];
 }
 
 @end

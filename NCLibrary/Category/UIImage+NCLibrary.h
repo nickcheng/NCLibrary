@@ -3,7 +3,7 @@
 //  NCLibrary
 //
 //  Created by nickcheng on 12-11-15.
-//  Copyright (c) 2012年 nx. All rights reserved.
+//  Copyright (c) 2012年 nickcheng.com. All rights reserved.
 //
 
 @interface UIImage (NCLibrary)
@@ -18,5 +18,9 @@
 
 + (UIImage *)imageFromBase64String:(NSString *)base64String;
 - (NSString *)base64String;
+
+- (instancetype)darken:(CGFloat)alpha andBlurRadius:(CGFloat)radius withBlendModeFilterName:(NSString *)blendModeFilterName;
+- (instancetype)darken:(CGFloat)alpha andBlurRadius:(CGFloat)radius;
+- (instancetype)darkenedAndBlurredImage;
 
 @end
